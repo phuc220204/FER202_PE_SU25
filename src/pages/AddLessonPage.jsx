@@ -2,57 +2,51 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import {
-  Form,
-  Button,
-  Spinner,
-  Alert,
-  FormCheck,
-  Toast,
-  ToastContainer,
-  Image,
-} from "react-bootstrap";
+import { Form, Button, Spinner, Alert, FormCheck } from "react-bootstrap";
 import { get, post, put } from "../api/apiCaller";
 
-// Task 3.2: Validation Schema using Yup
-// The form must validate all inputs
+/**
+ * Task 3.2 (1.5 marks): Add Lesson / Edit Lesson Form
+ * The form must validate all inputs:
+ * ✓ All fields are required.
+ * ✓ lessonTitle must contain more than 1 word (e.g., "Kanji Master").
+ * ✓ lessonImage must be a valid URL.
+ * ✓ estimatedTime must be a number.
+ * ✓ isCompleted is a switch control, set to false by default.
+ * ✓ level is a select box with these 5 options: N1, N2, N3, N4, N5.
+ *
+ * Task 3.4 (1.25 marks): Update form must follow the same validation rules.
+ */
 const validationSchema = Yup.object().shape({
-  // Task 3.2: lessonTitle must contain more than 1 word (e.g., "Kanji Master")
-  // All fields are required
+  // Task 3.2: All fields are required. lessonTitle must contain more than 1 word
   lessonTitle: Yup.string()
     .trim()
-    .matches(/\S+\s+\S+/, "Must contain more than 1 word")
+    .matches(/(\s)/, "Must contain more than 1 word")
     .required("Lesson Title is required"),
 
   // Task 3.2: lessonImage must be a valid URL
-  // All fields are required
   lessonImage: Yup.string()
     .url("Must be a valid URL")
     .required("Lesson Image is required"),
 
-  // Task 3.2: level is a select box with 5 options: N1, N2, N3, N4, N5
-  // All fields are required
+  // Task 3.2: level is required
   level: Yup.string().required("Level is required"),
 
   // Task 3.2: estimatedTime must be a number
-  // All fields are required
-  // Additional validation: must be a positive number
   estimatedTime: Yup.number()
     .typeError("Must be a number")
-    .positive("Must be a positive number")
     .required("Estimated Time is required"),
 
-  // Task 3.2: isCompleted is a switch control, set to false by default
+  // Task 3.2: isCompleted is a switch control
   isCompleted: Yup.boolean(),
 });
 
 export default function AddLessonPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  // Task 3.4: Determine if this is Edit mode (has id) or Add mode
   const isEditMode = Boolean(id);
 
-  // Task 3.2: Initial form values with isCompleted set to false by default
+  // Task 3.2: Set default values, isCompleted is set to false by default
   const [initialValues, setInitialValues] = useState({
     lessonTitle: "",
     lessonImage: "",
@@ -62,11 +56,8 @@ export default function AddLessonPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastVariant, setToastVariant] = useState("success");
 
-  // Task 3.4: Load existing lesson data when in Edit mode
+  // Task 3.4: Load dữ liệu cũ khi ở chế độ Edit
   useEffect(() => {
     if (isEditMode) {
       setLoading(true);
@@ -82,28 +73,22 @@ export default function AddLessonPage() {
     }
   }, [id, isEditMode]);
 
+  // Xử lý submit form cho cả Add và Edit
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       if (isEditMode) {
+        // Task 3.4: Update lesson
         await put(`/${id}`, values);
-        setToastMessage("Lesson updated successfully!");
+        alert("Lesson updated successfully!");
       } else {
+        // Task 3.2: Add new lesson
         await post("/", values);
-        setToastMessage("Lesson added successfully!");
+        alert("Lesson added successfully!");
       }
 
-      setToastVariant("success");
-      setShowToast(true);
-
-      // Đợi 1.5 giây để hiển thị toast rồi navigate
-      setTimeout(() => {
-        navigate("/SE181834/all-lessons");
-      }, 1500);
+      navigate("/SE181834/all-lessons");
     } catch (err) {
       setError(err.message);
-      setToastMessage("Error: " + err.message);
-      setToastVariant("danger");
-      setShowToast(true);
     } finally {
       setSubmitting(false);
     }
@@ -119,38 +104,16 @@ export default function AddLessonPage() {
     <div className="w-75 mx-auto">
       <h2 className="mb-4">{isEditMode ? "Edit Lesson" : "Add New Lesson"}</h2>
 
-      {/* Toast Notification */}
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          show={showToast}
-          onClose={() => setShowToast(false)}
-          delay={3000}
-          autohide
-          bg={toastVariant}
-        >
-          <Toast.Header>
-            <strong className="me-auto">
-              {toastVariant === "success" ? "Success" : "Error"}
-            </strong>
-          </Toast.Header>
-          <Toast.Body
-            className={toastVariant === "success" ? "text-white" : ""}
-          >
-            {toastMessage}
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
-
-      {/* Task 3.2 & 3.4: Add/Edit Lesson Form with validation */}
+      {/* Task 3.2: The form must validate all inputs */}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ isSubmitting, values }) => (
+        {({ isSubmitting }) => (
           <FormikForm>
-            {/* Task 3.2: lessonTitle field - required, more than 1 word */}
+            {/* Task 3.2: lessonTitle field */}
             <Form.Group className="mb-3" controlId="lessonTitle">
               <Form.Label>Lesson Title</Form.Label>
               <Field type="text" name="lessonTitle" as={Form.Control} />
@@ -161,7 +124,7 @@ export default function AddLessonPage() {
               />
             </Form.Group>
 
-            {/* Task 3.2: lessonImage field - required, valid URL */}
+            {/* Task 3.2: lessonImage field */}
             <Form.Group className="mb-3" controlId="lessonImage">
               <Form.Label>Lesson Image URL</Form.Label>
               <Field type="text" name="lessonImage" as={Form.Control} />
@@ -170,26 +133,9 @@ export default function AddLessonPage() {
                 component={Form.Text}
                 className="text-danger"
               />
-              {/* Image Preview - additional feature for better UX */}
-              {values.lessonImage && (
-                <div className="mt-2">
-                  <Form.Text className="text-muted">Preview:</Form.Text>
-                  <Image
-                    src={values.lessonImage}
-                    thumbnail
-                    style={{ maxWidth: "200px", maxHeight: "200px" }}
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
-                    onLoad={(e) => {
-                      e.target.style.display = "block";
-                    }}
-                  />
-                </div>
-              )}
             </Form.Group>
 
-            {/* Task 3.2: level - select box with 5 options: N1, N2, N3, N4, N5 */}
+            {/* Task 3.2: level is a select box with 5 options: N1, N2, N3, N4, N5 */}
             <Form.Group className="mb-3" controlId="level">
               <Form.Label>Level</Form.Label>
               <Field as={Form.Select} name="level">
@@ -206,7 +152,7 @@ export default function AddLessonPage() {
               />
             </Form.Group>
 
-            {/* Task 3.2: estimatedTime - required, must be a number */}
+            {/* Task 3.2: estimatedTime field */}
             <Form.Group className="mb-3" controlId="estimatedTime">
               <Form.Label>Estimated Time (minutes)</Form.Label>
               <Field type="text" name="estimatedTime" as={Form.Control} />
@@ -217,7 +163,7 @@ export default function AddLessonPage() {
               />
             </Form.Group>
 
-            {/* Task 3.2: isCompleted - switch control, default false */}
+            {/* Task 3.2: isCompleted is a switch control */}
             <Form.Group className="mb-3" controlId="isCompleted">
               <Field
                 as={FormCheck}
