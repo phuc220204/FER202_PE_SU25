@@ -3,12 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { get } from "../api/apiCaller";
 import { Card, Spinner, Alert, ListGroup, Button } from "react-bootstrap";
 
-/**
- * Task 3.1 (1.0 mark): Lesson Detail Page
- * Display all the details of a lesson: lessonTitle, lessonImage, level, isCompleted, estimatedTime.
- * The estimatedTime value must be formatted with comma separators for thousands (e.g., 1,200 minutes).
- * Design and arrange this component in a visually pleasing and clear layout.
- */
 export default function LessonDetailPage() {
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +27,6 @@ export default function LessonDetailPage() {
     fetchLesson();
   }, [id]);
 
-  // Task 3.1: Format estimatedTime with comma separators for thousands
   const formatTime = (time) => {
     return new Intl.NumberFormat().format(time);
   };
@@ -53,11 +46,8 @@ export default function LessonDetailPage() {
   }
 
   return (
-    // Task 3.1: Design and arrange this component in a visually pleasing and clear layout
     <Card className="w-75 mx-auto">
-      {/* Task 3.1: Display lessonTitle */}
       <Card.Header as="h3">{lesson.lessonTitle}</Card.Header>
-      {/* Task 3.1: Display lessonImage */}
       <Card.Img
         variant="top"
         src={lesson.lessonImage}
@@ -65,7 +55,6 @@ export default function LessonDetailPage() {
         style={{ maxHeight: "400px", objectFit: "cover" }}
       />
       <Card.Body>
-        {/* Task 3.1: Display all details: level, isCompleted, estimatedTime */}
         <ListGroup variant="flush">
           <ListGroup.Item>
             <strong>Level:</strong> {lesson.level}
