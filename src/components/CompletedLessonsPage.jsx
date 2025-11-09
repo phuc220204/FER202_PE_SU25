@@ -31,7 +31,7 @@ export default function CompletedLessonsPage() {
   }, []);
 
   const handleItemClick = (id) => {
-    navigate(`/SE181834/lessons/${id}`);
+    navigate(`/se181834/lessons/${id}`);
   };
 
   if (loading) {

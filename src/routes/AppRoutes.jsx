@@ -15,23 +15,23 @@ const routes = () => [
         element: <HomePage />,
       },
       {
-        path: "/SE181834/all-lessons",
+        path: "/se181834/all-lessons",
         element: <AllLessonsPage />,
       },
       {
-        path: "/SE181834/completed-lessons",
+        path: "/se181834/completed-lessons",
         element: <CompletedLessonsPage />,
       },
       {
-        path: "/SE181834/lessons/:id",
+        path: "/se181834/lessons/:id",
         element: <LessonDetailPage />,
       },
       {
-        path: "/add-lesson",
+        path: "/se181834/add-lesson",
         element: <AddLessonPage />,
       },
       {
-        path: "/SE181834/edit-lesson/:id",
+        path: "/se181834/edit-lesson/:id",
         element: <AddLessonPage />,
       },
     ],

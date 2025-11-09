@@ -38,12 +38,12 @@ export default function AllLessonsPage() {
   }, []);
 
   const handleItemClick = (id) => {
-    navigate(`/SE181834/lessons/${id}`);
+    navigate(`/se181834/lessons/${id}`);
   };
 
   const handleEdit = (e, id) => {
     e.stopPropagation();
-    navigate(`/SE181834/edit-lesson/${id}`);
+    navigate(`/se181834/edit-lesson/${id}`);
   };
 
   const handleDelete = async (e, id) => {
@@ -82,7 +82,7 @@ export default function AllLessonsPage() {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0">All Lessons</h2>
-        <Button variant="success" onClick={() => navigate("/add-lesson")}>
+        <Button variant="success" onClick={() => navigate("/se181834/add-lesson")}>
           + Add New Lesson
         </Button>
       </div>

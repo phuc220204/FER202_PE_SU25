@@ -64,7 +64,7 @@ export default function AddLessonPage() {
         alert("Lesson added successfully!");
       }
 
-      navigate("/SE181834/all-lessons");
+      navigate("/se181834/all-lessons");
     } catch (err) {
       setError(err.message);
     } finally {

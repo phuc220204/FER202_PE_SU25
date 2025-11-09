@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { get } from "../api/apiCaller";
-import { Card, Spinner, Alert, ListGroup, Button } from "react-bootstrap";
+import { Card, Spinner, Alert, Button } from "react-bootstrap";
 
 export default function LessonDetailPage() {
   const [lesson, setLesson] = useState(null);
@@ -46,28 +46,24 @@ export default function LessonDetailPage() {
   }
 
   return (
-    <Card className="w-75 mx-auto">
-      <Card.Header as="h3">{lesson.lessonTitle}</Card.Header>
+    <Card className="mx-auto" style={{ maxWidth: "900px", width: "100%" }}>
       <Card.Img
         variant="top"
         src={lesson.lessonImage}
         alt={lesson.lessonTitle}
-        style={{ maxHeight: "400px", objectFit: "cover" }}
+        style={{ maxHeight: "500px", objectFit: "cover", width: "100%" }}
       />
       <Card.Body>
-        <ListGroup variant="flush">
-          <ListGroup.Item>
-            <strong>Level:</strong> {lesson.level}
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <strong>Status:</strong>{" "}
-            {lesson.isCompleted ? "Completed" : "Not Completed"}
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <strong>Estimated Time:</strong> {formatTime(lesson.estimatedTime)}{" "}
-            minutes
-          </ListGroup.Item>
-        </ListGroup>
+        <Card.Title>{lesson.lessonTitle}</Card.Title>
+        <Card.Text>
+          <strong>Level:</strong> {lesson.level}
+          <br />
+          <strong>Status:</strong>{" "}
+          {lesson.isCompleted ? "Completed" : "Not Completed"}
+          <br />
+          <strong>Estimated Time:</strong> {formatTime(lesson.estimatedTime)}{" "}
+          minutes
+        </Card.Text>
         <Button variant="primary" onClick={() => navigate(-1)} className="mt-3">
           Back to list
         </Button>

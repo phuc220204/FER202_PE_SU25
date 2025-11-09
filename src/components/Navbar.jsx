@@ -17,10 +17,10 @@ export default function AppNavbar() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/SE181834/all-lessons">
+            <Nav.Link as={Link} to="/se181834/all-lessons">
               All Lessons
             </Nav.Link>
-            <Nav.Link as={Link} to="/SE181834/completed-lessons">
+            <Nav.Link as={Link} to="/se181834/completed-lessons">
               Completed Lessons
             </Nav.Link>
           </Nav>

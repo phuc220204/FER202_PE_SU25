@@ -25,7 +25,7 @@ export default function HomePage() {
   }, []);
 
   const handleImageClick = (id) => {
-    navigate(`/SE181834/lessons/${id}`);
+    navigate(`/se181834/lessons/${id}`);
   };
 
   if (loading) {
